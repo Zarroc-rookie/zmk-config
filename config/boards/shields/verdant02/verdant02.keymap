@@ -4,68 +4,56 @@
  *
  * Verdant02 default keymap (3 layers).
  *
- * Key positions map EXACTLY to the LAYOUT argument order in the original
- * QMK Firmware/verdant02/Verdant02.h (54 bindings):
- *   Phys Row 0: 14 keys (indexes  0..13)
- *   Phys Row 1: 13 keys (indexes 14..26)
- *   Phys Row 2: 14 keys (indexes 27..40)
- *   Phys Row 3: 13 keys (indexes 41..53)
+ * 54 bindings per layer; order matches QMK Firmware/verdant02/Verdant02.h:
+ *   Phys Row 0: 14 keys
+ *   Phys Row 1: 13 keys
+ *   Phys Row 2: 14 keys
+ *   Phys Row 3: 13 keys
  *
- * NOTE: ZMK uses FULL keycode names from zmk,keys.h
- *       (LSHIFT, LCTRL, LEFT_GUI, DELETE, RETURN, LEFT_BRACKET, …).
- *       The 3-letter QMK-style shorthands (LSHFT, LCTL, LGUI, DEL, …)
- *       do NOT exist in DT and will trigger "expected number" parse errors.
+ * KEYCODE RULE (to avoid "expected number" parse errors):
+ *   Every &kp keycode below MUST appear as a #define in
+ *   dt-bindings/zmk/keys.h. NO guesswork, no undocumented short names.
+ *   Modifier/LGUI/LCTRL/etc and C_MUTE are referenced from confirmed real-world
+ *   ZMK keymaps (ahokore, corne) that compile successfully.
  */
 
+#include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
-#include <dt-bindings/zmk/rgb.h>
 
 / {
     keymap {
         compatible = "zmk,keymap";
 
-        /* ================== Layer 0: BASE (ANSI 40%) ================== */
+        /* ============== Layer 0: BASE (ANSI 40%) ============== */
         default_layer {
             label = "Base";
-            /* Phys Row 0 [14]: Del  Q  W  E  R  T  Y  U  I  O  P  [  ]  Enter        */
-            /* Phys Row 1 [13]: Tab  A  S  D  F  G  H  J  K  L  ;  '  #                 */
-            /* Phys Row 2 [14]: LSh  \  Z  X  C  V  B  N  M  ,  .  /  FN1  RSh          */
-            /* Phys Row 3 [13]: LCtl LGUI FN2 LAlt Spc Spc FN1 BkSp Lft Dwn Up Rgt Mute  */
             bindings = <
-&kp DELETE  &kp Q       &kp W       &kp E       &kp R       &kp T       &kp Y       &kp U       &kp I       &kp O       &kp P       &kp LEFT_BRACKET &kp RIGHT_BRACKET &kp RETURN
-&kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G       &kp H       &kp J       &kp K       &kp L       &kp SEMI_COLON &kp SINGLE_QUOTE &kp NON_US_HASH
-&kp LSHIFT  &kp BACKSLASH &kp Z     &kp X       &kp C       &kp V       &kp B       &kp N       &kp M       &kp COMMA   &kp PERIOD  &kp FORWARD_SLASH &mo 1            &kp RSHIFT
-&kp LCTRL   &kp LEFT_GUI &mo 2      &kp LEFT_ALT &kp SPACE  &kp SPACE   &mo 1       &kp BACKSPACE &kp LEFT   &kp DOWN    &kp UP      &kp RIGHT     &kp C_MUTE
+&kp DELETE &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P &kp LEFT_BRACKET &kp RIGHT_BRACKET &kp RETURN
+&kp TAB &kp A &kp S &kp D &kp F &kp G &kp H &kp J &kp K &kp L &kp SEMI &kp SINGLE_QUOTE &kp NON_US_HASH
+&kp LSHIFT &kp BACKSLASH &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp PERIOD &kp FSLH &mo 1 &kp RSHIFT
+&kp LCTRL &kp LGUI &mo 2 &kp LALT &kp SPACE &kp SPACE &mo 1 &kp BACKSPACE &kp LEFT &kp DOWN &kp UP &kp RIGHT &kp C_MUTE
             >;
         };
 
-        /* ===== Layer 1: NUM + FUNC (FN1, original QMK _FN1) ===== */
+        /* ============== Layer 1: NUM + FUNC (_FN1) ============== */
         fn1_layer {
             label = "FN1";
-            /*           Esc  1     2     3     4     5     6     7     8     9     0     -       =       BkSp       */
-            /*           LGUI F1    F2    F3    F4    F5    F6    F7    F8    F9    F10   F11     F12                 */
-            /*           _    _     RGBtg RGBmd _     _     _     _     _     _     _     _       _       Boot       */
-            /*           _    _     _     _     _     _     _     _     _     _     _     _       _                  */
             bindings = <
-&kp ESCAPE  &kp N1      &kp N2      &kp N3      &kp N4      &kp N5      &kp N6      &kp N7      &kp N8      &kp N9      &kp N0      &kp MINUS     &kp EQUAL      &kp BACKSPACE
-&kp LEFT_GUI &kp F1     &kp F2      &kp F3      &kp F4      &kp F5      &kp F6      &kp F7      &kp F8      &kp F9      &kp F10     &kp F11       &kp F12
-&trans       &trans     &rgb_ug RGB_TOG &rgb_ug RGB_HUI &trans &trans &trans &trans &trans &trans &trans &trans &trans &bootloader
-&trans       &trans     &trans      &trans      &trans      &trans      &trans      &trans      &trans      &trans      &trans      &trans        &trans
+&kp ESCAPE &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL &kp BACKSPACE
+&kp LGUI &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &bootloader
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
             >;
         };
 
-        /* ===== Layer 2: NAV + EDIT (FN2, original QMK _FN2) ===== */
+        /* ============== Layer 2: NAV + EDIT (_FN2) ============== */
         fn2_layer {
             label = "FN2";
-            /*           _    _     _     End   _     _     _     _     Ins   _     PSCR  _       _       _          */
-            /*           _    _     _     Del   _     _     Home  _     _     _     _     _       _                  */
-            /*           _    _     _     _     _     _     _     _     _     _     _     _       _       _          */
-            /*           _    _     _     _     _     _     _     _     _     PGDN  PGUP  _       _                  */
             bindings = <
-&trans       &trans     &trans      &kp END     &trans      &trans      &trans      &trans      &kp INSERT  &trans      &kp PRINT_SCREEN &trans    &trans        &trans
-&trans       &trans     &trans      &kp DELETE  &trans      &trans      &kp HOME    &trans      &trans      &trans      &trans       &trans      &trans
-&trans       &trans     &trans      &trans      &trans      &trans      &trans      &trans      &trans      &trans      &trans       &trans      &trans        &trans
-&trans       &trans     &trans      &trans      &trans      &trans      &trans      &trans      &trans      &kp PAGE_DOWN &kp PAGE_UP &trans      &trans
+&trans &trans &trans &kp END &trans &trans &trans &trans &kp INSERT &trans &kp PSCRN &trans &trans &trans
+&trans &trans &trans &kp DELETE &trans &trans &kp HOME &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans &trans &trans &trans &kp PG_DN &kp PG_UP &trans &trans
             >;
         };
     };
