@@ -5,13 +5,9 @@
  * Board-specific overlay: SuperMini NRF52840 (Pro Micro compatible).
  *
  * - #include verdant02.dtsi for the shield-agnostic kscan + matrix
- *   skeleton (chosen nodes, col2row direction, map of 54 RC entries,
- *   physical-layout for ZMK Studio).
+ *   skeleton (chosen nodes, col2row direction, map of 54 RC entries).
  * - Append row-gpios (8 inputs, PULL_DOWN + ACTIVE_HIGH) and
  *   col-gpios (7 outputs, ACTIVE_HIGH) matching the SuperMini pinout.
- * - WS2812 SPI config on P1.01 (D21) for 13 RGB LEDs.
- *   Status is "disabled" by default — enable after flying a wire
- *   from P1.01 to the LED strip DIN pin.
  *
  *   ROWS (QMK -> silk -> nRF pin):
  *     R0 PD2  -> D0      P0.08
@@ -31,10 +27,6 @@
  *     C4 PB6  -> D10     P0.09
  *     C5 PF4  -> A3/D21  P0.31
  *     C6 PF5  -> A2/D20  P0.29
- *
- *   RGB LED:
- *     WS2812 DIN -> P1.01 (D21, extra pin on SuperMini)
- *     13 LEDs, SPI3 MOSI, status = "disabled" (enable post-fly-wire)
  *
  * GPIO direction (INPUT vs OUTPUT) is set by the zmk,kscan-gpio-matrix
  * driver automatically; NEVER include GPIO_INPUT or GPIO_OUTPUT flags
@@ -65,48 +57,4 @@
         , <&gpio0 31 (GPIO_ACTIVE_HIGH)>
         , <&gpio0 29 (GPIO_ACTIVE_HIGH)>
         ;
-};
-
-/* ================================================================
- * WS2812 RGB LED strip (13 LEDs) on P1.01 (D21)
- * Status: DISABLED by default.
- * To enable: change status = "disabled" to status = "okay" below,
- *            and add `zmk,underglow = &led_strip;` to chosen node
- *            in verdant02.dtsi.
- * ================================================================ */
-
-#include <dt-bindings/led/led.h>
-
-&pinctrl {
-    spi3_default: spi3_default {
-        group1 {
-            psels = <NRF_PSEL(SPIM_MOSI, 1, 1)>;
-        };
-    };
-    spi3_sleep: spi3_sleep {
-        group1 {
-            psels = <NRF_PSEL(SPIM_MOSI, 1, 1)>;
-            low-power-enable;
-        };
-    };
-};
-
-&spi3 {
-    compatible = "nordic,nrf-spim";
-    status = "disabled";
-    pinctrl-0 = <&spi3_default>;
-    pinctrl-1 = <&spi3_sleep>;
-    pinctrl-names = "default", "sleep";
-
-    led_strip: ws2812@0 {
-        compatible = "worldsemi,ws2812-spi";
-        reg = <0>;
-        spi-max-frequency = <4000000>;
-        chain-length = <13>;
-        spi-one-frame = <0x70>;
-        spi-zero-frame = <0x40>;
-        color-mapping = <LED_COLOR_ID_GREEN
-                          LED_COLOR_ID_RED
-                          LED_COLOR_ID_BLUE>;
-    };
 };

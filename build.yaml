@@ -1,17 +1,6 @@
-# Verdant02 ZMK Build Map
-# Used by GitHub Actions build-user-config.yml to know what to build.
-
+# https://zmk.dev/docs/development/side-effects#set-ultra-low-power-mode
 include:
-  # Main firmware: USB + BLE dual-mode + ZMK Studio (web editor).
   - board: nice_nano_v2
     shield: verdant02
-    snippet: studio-rpc-usb-uart
-    cmake-args: -DCONFIG_ZMK_STUDIO=y
-
-  # One-shot settings reset: flash this ONCE before flashing the new
-  # verdant02 firmware, to clear any cached BT_DEVICE_NAME / pairing
-  # data from previous firmware. Without this, the old empty device
-  # name may be restored from settings partition and override the new
-  # CONFIG_ZMK_KEYBOARD_NAME value.
   - board: nice_nano_v2
     shield: settings_reset
