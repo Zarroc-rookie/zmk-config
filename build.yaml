@@ -1,6 +1,6 @@
 # https://zmk.dev/docs/development/side-effects#set-ultra-low-power-mode
 include:
-  - board: nice_nano_v2
+  - board: nice_nano
     shield: verdant02
-  - board: nice_nano_v2
+  - board: nice_nano
     shield: settings_reset
