@@ -3,12 +3,11 @@
 
 if SHIELD_VERDANT02
 
-# The board-level ZMK build defaults to ROW2COL for historical reasons;
-# Verdant02 PCB has COL2ROW (anode on COL side, user-verified with DMM).
-config ZMK_KSCAN_MATRIX_COL2ROW
-    default y
-
-config ZMK_KSCAN_MATRIX_ROW2COL
-    default n
+# Diode direction is enforced declaratively in verdant02.dtsi via
+#   kscan0.diode-direction = "col2row",
+# which takes precedence over Kconfig. We intentionally do NOT set
+# ZMK_KSCAN_MATRIX_COL2ROW / ROW2COL here because their type and
+# symbol name changed between ZMK releases and the Kconfig warnings
+# abort the build under strict mode.
 
 endif
