@@ -25,10 +25,12 @@
 / {
     /* Custom behaviors */
     behaviors {
+        /* Hold-tap: tap = no action, hold 2s = clear all BLE pairings */
         bt_clr_hold: bt_clr_hold {
-            compatible = "zmk,behavior-hold";
-            bindings = <&bt BT_CLR>;
-            hold-ms = <2000>;
+            compatible = "zmk,behavior-hold-tap";
+            bindings = <&trans &bt BT_CLR>;
+            tapping-term-ms = <2000>;
+            flavor = "hold-preferred";
         };
     };
 
