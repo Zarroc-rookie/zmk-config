@@ -12,4 +12,4 @@ jobs:
   build:
     # Use ZMK's official reusable workflow — it reads build.yaml automatically
     # https://zmk.dev/docs/user-setup#github-actions
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v3.6.0
