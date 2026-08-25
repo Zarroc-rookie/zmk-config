@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2026 The ZMK Contributors
+ * SPDX-License-Identifier: MIT
+ *
+ * Verdant02 shield overlay — SuperMini/ProMicro NRF52840 / nice!nano v2 compatible
+ *
+ * Matrix structure (CRITICAL INFO most AI generators get wrong):
+ *  NOT a simple 4x14 matrix. This PCB uses an 8x7 INTERLEAVED design where
+ *  each physical row alternates between TWO logical rows:
+ *    Phys Row 0 => Log R0 and R4 alternating
+ *    Phys Row 1 => Log R1 and R5 alternating
+ *    Phys Row 2 => Log R2 and R6 alternating
+ *    Phys Row 3 => Log R3 and R7 alternating
+ *  => 8 logical rows × 7 logical cols = 56 positions (3 are unused = XXX)
+ *
+ * GPIO mapping derived from:  ATmega32U4 port  ->  Arduino Pro Micro silk  ->  nRF52840 (SuperMini)
+ *                            (QMK config.h)      (original Pro Micro 5V)      (this board)
+ *
+ * Diode: COL2ROW  (Column = Anode(+), Row = Cathode(-) with diode band towards Row)
+ *        Verified: red(+) probe on COL side conducts, black(-) on ROW side.
+ */
+
+#include <dt-bindings/zmk/matrix_transform.h>
+
+/ {
+    model = "Verdant02";
+    compatible = "zmk,shield-verdant02";
+
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &default_transform;
+    };
+
+    /* ---------------------------------------------------------------- *
+     *  MATRIX TRANSFORM — maps physical key positions (14+13+14+13=54) *
+     *  onto the 8x7 logical matrix. ONE MISTAKE HERE => EVERY KEY WRONG*
+     * ---------------------------------------------------------------- */
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <7>;
+        rows = <8>;
+
+        map = <
+/* Phys Row 0 (14 keys):  K00 K40 K01 K41 K02 K32 K03 K33 K04 K34 K05 K45 K06 K46 */
+RC_MATRIX(0,0) RC_MATRIX(4,0) RC_MATRIX(0,1) RC_MATRIX(4,1) RC_MATRIX(0,2) RC_MATRIX(3,2) RC_MATRIX(0,3) RC_MATRIX(3,3) RC_MATRIX(0,4) RC_MATRIX(3,4) RC_MATRIX(0,5) RC_MATRIX(4,5) RC_MATRIX(0,6) RC_MATRIX(4,6)
+
+/* Phys Row 1 (13 keys):  K10 K50 K11 K51 K12 K42 K13 K43 K14 K44 K15 K55 K16      */
+RC_MATRIX(1,0) RC_MATRIX(5,0) RC_MATRIX(1,1) RC_MATRIX(5,1) RC_MATRIX(1,2) RC_MATRIX(4,2) RC_MATRIX(1,3) RC_MATRIX(4,3) RC_MATRIX(1,4) RC_MATRIX(4,4) RC_MATRIX(1,5) RC_MATRIX(5,5) RC_MATRIX(1,6)
+
+/* Phys Row 2 (14 keys):  K20 K60 K21 K61 K22 K52 K23 K53 K24 K54 K25 K65 K26 K56 */
+RC_MATRIX(2,0) RC_MATRIX(6,0) RC_MATRIX(2,1) RC_MATRIX(6,1) RC_MATRIX(2,2) RC_MATRIX(5,2) RC_MATRIX(2,3) RC_MATRIX(5,3) RC_MATRIX(2,4) RC_MATRIX(5,4) RC_MATRIX(2,5) RC_MATRIX(6,5) RC_MATRIX(2,6) RC_MATRIX(5,6)
+
+/* Phys Row 3 (13 keys):  K30 K70 K31 K71 K62 K63 K73 K64 K35 K36 K75 K66 K76      */
+RC_MATRIX(3,0) RC_MATRIX(7,0) RC_MATRIX(3,1) RC_MATRIX(7,1) RC_MATRIX(6,2) RC_MATRIX(6,3) RC_MATRIX(7,3) RC_MATRIX(6,4) RC_MATRIX(3,5) RC_MATRIX(3,6) RC_MATRIX(7,5) RC_MATRIX(6,6) RC_MATRIX(7,6)
+        >;
+    };
+
+    /* ---------------------------------------------------------------- *
+     *  GPIO MATRIX SCANNER                                            *
+     *  COL2ROW scan logic:                                             *
+     *    Cols = OUTPUT, each driven LOW sequentially (ACTIVE_LOW)      *
+     *    Rows = INPUT with INTERNAL PULL-UP (rest HIGH)                *
+     *    Key pressed: low-side col pulls the row LOW through diode    *
+     *                 (Anode on low col side -> Cathode on row side)   *
+     * ---------------------------------------------------------------- */
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+        diode-direction = "col2row";
+
+        /* 8 rows — input, pull-up, active low */
+        row-gpios
+            = <&gpio0  8 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R0: PD2  -> D0      -> P0.08 (matches your silkscreen D0) */
+            , <&gpio1  4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R1: PB4  -> D8      -> P1.04 (matches your silkscreen D8) */
+            , <&gpio1 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R2: PF7  -> A0/D18  -> P1.15 (matches your silkscreen A0=P1.15) */
+            , <&gpio1  0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R3: PD7  -> D6      -> P1.00 (matches your silkscreen D6) */
+            , <&gpio0 22 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R4: PD4  -> D4      -> P0.22 (matches your silkscreen D4) */
+            , <&gpio0 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R5: PE6  -> D7      -> P0.11 (matches your silkscreen D7) */
+            , <&gpio1 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R6: PB3  -> D14/MISO-> P1.11 (matches your silkscreen D14=P1.11) */
+            , <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R7: PB1  -> D15/SCLK-> P1.13 (matches your silkscreen D15=P1.13) */
+            ;
+
+        /* 7 cols — output, active low */
+        col-gpios
+            = <&gpio0 24 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C0: PC6  -> D5      -> P0.24 (matches your silkscreen D5) */
+            , <&gpio0  2 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C1: PF6  -> A1/D19  -> P0.02 (matches your silkscreen A1=P0.02) */
+            , <&gpio1  6 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C2: PB5  -> D9      -> P1.06 (matches your silkscreen D9) */
+            , <&gpio0  6 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C3: PD3  -> D1/TX   -> P0.06 (matches your silkscreen D1=P0.06) */
+            , <&gpio0  9 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C4: PB6  -> D10     -> P0.09 (matches your silkscreen D10) */
+            , <&gpio0 31 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C5: PF4  -> A3/D21  -> P0.31 (matches your silkscreen A3=P0.31) */
+            , <&gpio0 29 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C6: PF5  -> A2/D20  -> P0.29 (matches your silkscreen A2=P0.29) */
+            ;
+    };
+};

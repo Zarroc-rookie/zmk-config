@@ -1,0 +1,18 @@
+# This file is a template; remove these comments before committing to a real ZMK user-config repo.
+# See https://zmk.dev/docs/user-setup for west build instructions.
+#
+# Include the nice!nano v2 board definition.
+# Then specify our custom SHIELD.
+
+# The Zephyr RTOS base revision — must match ZMK main's Zephyr version.
+manifest:
+  remotes:
+    - name: zmkfirmware
+      url-base: https://github.com/zmkfirmware
+  projects:
+    - name: zmk
+      remote: zmkfirmware
+      revision: main
+      import: app/west.yml
+  self:
+    path: config

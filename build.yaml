@@ -1,0 +1,6 @@
+# Verdant02 ZMK Build Map
+# Used by GitHub Actions build-user-config.yml to know what to build.
+
+include:
+  - board: nice_nano_v2
+    shield: verdant02

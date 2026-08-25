@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2026 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+#
+
+# Verdant02 is a MONOBLOCK (single, non-split) keyboard.
+# This file forces matrix parameters when the SHIELD is selected.
+
+if SHIELD_VERDANT02
+
+config ZMK_MATRIX_ROWS
+    default 8
+
+config ZMK_MATRIX_COLS
+    default 7
+
+# COL2ROW = columns are scanned (output), rows are read (input)
+config ZMK_KSCAN_MATRIX_ROW2COL
+    default n
+
+config ZMK_KSCAN_MATRIX_COL2ROW
+    default y
+
+endif # SHIELD_VERDANT02

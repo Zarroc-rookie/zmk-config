@@ -1,0 +1,13 @@
+#
+# Copyright (c) 2026 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+#
+
+config SHIELD_VERDANT02
+    bool "Verdant02 40% Interleaved Matrix (Monoblock)"
+    depends on BOARD_NICE_NANO_V2 || BOARD_PRO_MICRO_NRF52840
+    default SHIELD_VERDANT02
+    select ZMK_KEYBOARD_HAS_MATRIX_TRANSFORM
+    help
+      Enable Verdant02 shield. 8 rows x 7 cols interleaved matrix,
+      54-key 4 physical row layout (14/13/14/13).
