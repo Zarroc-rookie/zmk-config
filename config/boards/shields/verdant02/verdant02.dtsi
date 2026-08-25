@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2026 The ZMK Contributors
+ * SPDX-License-Identifier: MIT
+ *
+ * Verdant02 shield: common hardware definitions.
+ *
+ * This file is board-agnostic. It declares the kscan instance and
+ * the 8x7 interleaved matrix-transform (54 mappings for the 14/13/14/13
+ * physical-row layout as defined by the original QMK Verdant02.h LAYOUT).
+ *
+ * Board-specific files (e.g. verdant02.overlay for promicro_nrf52840)
+ * MUST #include this dtsi and then populate &kscan0 with row-gpios /
+ * col-gpios arrays (only the pin assignments vary by board).
+ */
+
+#include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &matrix_transform_0;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+        wakeup-source;
+
+        /* NOTE: row-gpios / col-gpios are NOT populated here.
+         * They must be filled in by the board-specific overlay that
+         * #includes this file, via:
+         *   &kscan0 { row-gpios = <...>; col-gpios = <...>; };
+         */
+    };
+
+    matrix_transform_0: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <7>;
+        rows = <8>;
+
+        /*
+         * Exact verbatim copy of QMK Firmware/verdant02/Verdant02.h
+         * LAYOUT macro argument order. Each `RC(r,c)` = logical row r,
+         * logical col c. 54 entries total (14 + 13 + 14 + 13).
+         */
+        map = <
+RC(0,0) RC(4,0) RC(0,1) RC(4,1) RC(0,2) RC(3,2) RC(0,3) RC(3,3) RC(0,4) RC(3,4) RC(0,5) RC(4,5) RC(0,6) RC(4,6)
+RC(1,0) RC(5,0) RC(1,1) RC(5,1) RC(1,2) RC(4,2) RC(1,3) RC(4,3) RC(1,4) RC(4,4) RC(1,5) RC(5,5) RC(1,6)
+RC(2,0) RC(6,0) RC(2,1) RC(6,1) RC(2,2) RC(5,2) RC(2,3) RC(5,3) RC(2,4) RC(5,4) RC(2,5) RC(6,5) RC(2,6) RC(5,6)
+RC(3,0) RC(7,0) RC(3,1) RC(7,1) RC(6,2) RC(6,3) RC(7,3) RC(6,4) RC(3,5) RC(3,6) RC(7,5) RC(6,6) RC(7,6)
+        >;
+    };
+};
