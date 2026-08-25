@@ -21,6 +21,7 @@
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
+#include <dt-bindings/gpio/gpio.h>
 
 / {
     model = "Verdant02";
@@ -67,27 +68,49 @@ RC(3,0) RC(7,0) RC(3,1) RC(7,1) RC(6,2) RC(6,3) RC(7,3) RC(6,4) RC(3,5) RC(3,6) 
         label = "KSCAN";
         diode-direction = "col2row";
 
-        /* 8 rows — input, pull-up, active low */
+        /*
+         * ROWS (8 inputs): direction auto-set by kscan-gpio-matrix.
+         * Flag: only PULL_UP + ACTIVE_LOW allowed here;
+         *       NEVER include GPIO_INPUT/GPIO_OUTPUT flags in DT specifier.
+         *   R0: PD2  -> D0      -> P0.08
+         *   R1: PB4  -> D8      -> P1.04
+         *   R2: PF7  -> A0/D18  -> P1.15
+         *   R3: PD7  -> D6      -> P1.00
+         *   R4: PD4  -> D4      -> P0.22
+         *   R5: PE6  -> D7      -> P0.11
+         *   R6: PB3  -> D14     -> P1.11
+         *   R7: PB1  -> D15     -> P1.13
+         */
         row-gpios
-            = <&gpio0  8 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R0: PD2  -> D0      -> P0.08 (matches your silkscreen D0) */
-            , <&gpio1  4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R1: PB4  -> D8      -> P1.04 (matches your silkscreen D8) */
-            , <&gpio1 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R2: PF7  -> A0/D18  -> P1.15 (matches your silkscreen A0=P1.15) */
-            , <&gpio1  0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R3: PD7  -> D6      -> P1.00 (matches your silkscreen D6) */
-            , <&gpio0 22 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R4: PD4  -> D4      -> P0.22 (matches your silkscreen D4) */
-            , <&gpio0 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R5: PE6  -> D7      -> P0.11 (matches your silkscreen D7) */
-            , <&gpio1 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R6: PB3  -> D14/MISO-> P1.11 (matches your silkscreen D14=P1.11) */
-            , <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>   /* R7: PB1  -> D15/SCLK-> P1.13 (matches your silkscreen D15=P1.13) */
+            = <&gpio0  8 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio1  4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio1 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio1  0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio0 22 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio0 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio1 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+            , <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
             ;
 
-        /* 7 cols — output, active low */
+        /*
+         * COLS (7 outputs): direction auto-set by kscan-gpio-matrix.
+         * Flag: only ACTIVE_LOW allowed here; DO NOT add GPIO_OUTPUT flag.
+         *   C0: PC6  -> D5      -> P0.24
+         *   C1: PF6  -> A1/D19  -> P0.02
+         *   C2: PB5  -> D9      -> P1.06
+         *   C3: PD3  -> D1      -> P0.06
+         *   C4: PB6  -> D10     -> P0.09
+         *   C5: PF4  -> A3/D21  -> P0.31
+         *   C6: PF5  -> A2/D20  -> P0.29
+         */
         col-gpios
-            = <&gpio0 24 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C0: PC6  -> D5      -> P0.24 (matches your silkscreen D5) */
-            , <&gpio0  2 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C1: PF6  -> A1/D19  -> P0.02 (matches your silkscreen A1=P0.02) */
-            , <&gpio1  6 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C2: PB5  -> D9      -> P1.06 (matches your silkscreen D9) */
-            , <&gpio0  6 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C3: PD3  -> D1/TX   -> P0.06 (matches your silkscreen D1=P0.06) */
-            , <&gpio0  9 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C4: PB6  -> D10     -> P0.09 (matches your silkscreen D10) */
-            , <&gpio0 31 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C5: PF4  -> A3/D21  -> P0.31 (matches your silkscreen A3=P0.31) */
-            , <&gpio0 29 (GPIO_OUTPUT | GPIO_ACTIVE_LOW)>    /* C6: PF5  -> A2/D20  -> P0.29 (matches your silkscreen A2=P0.29) */
+            = <&gpio0 24 (GPIO_ACTIVE_LOW)>
+            , <&gpio0  2 (GPIO_ACTIVE_LOW)>
+            , <&gpio1  6 (GPIO_ACTIVE_LOW)>
+            , <&gpio0  6 (GPIO_ACTIVE_LOW)>
+            , <&gpio0  9 (GPIO_ACTIVE_LOW)>
+            , <&gpio0 31 (GPIO_ACTIVE_LOW)>
+            , <&gpio0 29 (GPIO_ACTIVE_LOW)>
             ;
     };
 };
