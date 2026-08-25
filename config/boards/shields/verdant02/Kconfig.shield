@@ -1,8 +1,11 @@
 # Copyright (c) 2026 The ZMK Contributors
 # SPDX-License-Identifier: MIT
 
+# Canonical ZMK shield form: auto-set SHIELD_VERDANT02=y when `-DSHIELD=verdant02`.
+# Do NOT add `depends on BOARD_*` here — undefined board symbols trip
+# Zephyr's strict Kconfig mode (KCONFIG_WARN_UNDEF) and abort the build
+# with "Aborting due to Kconfig warnings". Board compatibility is enforced
+# at the devicetree level via nRF-specific &gpio0/&gpio1 references in
+# verdant02.overlay.
 config SHIELD_VERDANT02
-    bool "Verdant02"
-    depends on BOARD_PROMICRO_NRF52840 || BOARD_NICE_NANO
-    help
-      Verdant02 40% interleaved matrix (8x7). 54-key 4-row layout (14/13/14/13).
+    def_bool $(shields_list_contains,verdant02)

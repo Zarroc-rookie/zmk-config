@@ -6,8 +6,8 @@
  *
  * - #include verdant02.dtsi for the shield-agnostic kscan + matrix
  *   skeleton (chosen nodes, col2row direction, map of 54 RC entries).
- * - Append row-gpios (8 inputs, PULL_UP + ACTIVE_LOW) and
- *   col-gpios (7 outputs, ACTIVE_LOW) matching the SuperMini /
+ * - Append row-gpios (8 inputs, PULL_DOWN + ACTIVE_HIGH) and
+ *   col-gpios (7 outputs, ACTIVE_HIGH) matching the SuperMini /
  *   ProMicro NRF52840 pinout provided by the user:
  *
  *   ROWS (QMK -> silk -> nRF pin):
@@ -39,23 +39,23 @@
 
 &kscan0 {
     row-gpios
-        = <&gpio0  8 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio1  4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio1 15 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio1  0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio0 22 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio0 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio1 11 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
-        , <&gpio1 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>
+        = <&gpio0  8 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio1  4 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio1 15 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio1  0 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio0 22 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio0 11 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio1 11 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
+        , <&gpio1 13 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>
         ;
 
     col-gpios
-        = <&gpio0 24 (GPIO_ACTIVE_LOW)>
-        , <&gpio0  2 (GPIO_ACTIVE_LOW)>
-        , <&gpio1  6 (GPIO_ACTIVE_LOW)>
-        , <&gpio0  6 (GPIO_ACTIVE_LOW)>
-        , <&gpio0  9 (GPIO_ACTIVE_LOW)>
-        , <&gpio0 31 (GPIO_ACTIVE_LOW)>
-        , <&gpio0 29 (GPIO_ACTIVE_LOW)>
+        = <&gpio0 24 (GPIO_ACTIVE_HIGH)>
+        , <&gpio0  2 (GPIO_ACTIVE_HIGH)>
+        , <&gpio1  6 (GPIO_ACTIVE_HIGH)>
+        , <&gpio0  6 (GPIO_ACTIVE_HIGH)>
+        , <&gpio0  9 (GPIO_ACTIVE_HIGH)>
+        , <&gpio0 31 (GPIO_ACTIVE_HIGH)>
+        , <&gpio0 29 (GPIO_ACTIVE_HIGH)>
         ;
 };
