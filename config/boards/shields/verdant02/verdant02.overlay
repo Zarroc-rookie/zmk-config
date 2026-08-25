@@ -2,12 +2,13 @@
  * Copyright (c) 2026 The ZMK Contributors
  * SPDX-License-Identifier: MIT
  *
- * Board-specific overlay: SuperMini NRF52840 (Pro Micro compatible).
+ * Board-specific overlay: promicro_nrf52840 (SuperMini NRF52840).
  *
  * - #include verdant02.dtsi for the shield-agnostic kscan + matrix
  *   skeleton (chosen nodes, col2row direction, map of 54 RC entries).
  * - Append row-gpios (8 inputs, PULL_DOWN + ACTIVE_HIGH) and
- *   col-gpios (7 outputs, ACTIVE_HIGH) matching the SuperMini pinout.
+ *   col-gpios (7 outputs, ACTIVE_HIGH) matching the SuperMini /
+ *   ProMicro NRF52840 pinout provided by the user:
  *
  *   ROWS (QMK -> silk -> nRF pin):
  *     R0 PD2  -> D0      P0.08
