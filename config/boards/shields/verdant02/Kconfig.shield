@@ -5,7 +5,7 @@
 
 config SHIELD_VERDANT02
     bool "Verdant02 40% Interleaved Matrix (Monoblock)"
-    depends on BOARD_NICE_NANO_V2 || BOARD_PRO_MICRO_NRF52840
+    depends on BOARD_NICE_NANO || BOARD_PROMICRO_NRF52840
     default SHIELD_VERDANT02
     select ZMK_KEYBOARD_HAS_MATRIX_TRANSFORM
     help

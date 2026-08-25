@@ -1,0 +1,14 @@
+# Zephyr module manifest — required for out-of-tree boards/shields since ZMK 0.6+.
+# Replaces the deprecated `config/boards` discovery mechanism.
+# See: https://zmk.dev/docs/hardware-integration/new-shield and
+#      https://zmk.dev/docs/development/module-creation
+
+build:
+  # Expose `config/boards/shields/verdant02/` to Zephyr's shield discovery.
+  cmake: .
+  kconfig: config
+  settings:
+    board_roots:
+      - config
+    shield_roots:
+      - config
