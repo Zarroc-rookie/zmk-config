@@ -2,5 +2,14 @@
 # Used by GitHub Actions build-user-config.yml to know what to build.
 
 include:
+  # Main firmware: USB + BLE dual-mode.
   - board: nice_nano_v2
     shield: verdant02
+
+  # One-shot settings reset: flash this ONCE before flashing the new
+  # verdant02 firmware, to clear any cached BT_DEVICE_NAME / pairing
+  # data from previous firmware. Without this, the old empty device
+  # name may be restored from settings partition and override the new
+  # CONFIG_ZMK_KEYBOARD_NAME value.
+  - board: nice_nano_v2
+    shield: settings_reset
