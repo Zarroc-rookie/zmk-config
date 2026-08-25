@@ -1,15 +1,6 @@
-name: Build Verdant02 ZMK Firmware
-
-on:
-  push:
-    paths:
-      - "config/**"
-      - "build.yaml"
-      - ".github/workflows/**"
-  workflow_dispatch:
+name: Build ZMK firmware
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    # Use ZMK's official reusable workflow — it reads build.yaml automatically
-    # https://zmk.dev/docs/user-setup#github-actions
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v3.6.0
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3
