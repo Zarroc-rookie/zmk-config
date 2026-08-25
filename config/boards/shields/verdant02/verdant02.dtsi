@@ -4,12 +4,13 @@
  *
  * Verdant02 shield: common hardware definitions.
  *
- * This file is board-agnostic. It declares the kscan instance and
- * the 8x7 interleaved matrix-transform (54 mappings).
+ * This file is board-agnostic. It declares the kscan instance,
+ * the 8x7 interleaved matrix-transform (54 mappings), and the
+ * physical-layout node that ties them together.
  *
- * Board-specific files (e.g. verdant02.overlay for promicro_nrf52840)
- * MUST #include this dtsi and then populate &kscan0 with row-gpios /
- * col-gpios arrays (only the pin assignments vary by board).
+ * Board-specific files (e.g. verdant02.overlay for nice_nano)
+ * MUST #include this dtsi and then populate &kscan0 with row-gpios
+ * and col-gpios arrays.
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
@@ -19,18 +20,17 @@
     chosen {
         zmk,kscan = &kscan0;
         zmk,matrix-transform = &matrix_transform_0;
+        zmk,physical-layout = &physical_layout0;
+    };
+
+    physical_layout0: physical_layout_0 {
+        transform = &matrix_transform_0;
     };
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-matrix";
         diode-direction = "col2row";
         wakeup-source;
-
-        /* NOTE: row-gpios / col-gpios are NOT populated here.
-         * They must be filled in by the board-specific overlay that
-         * #includes this file, via:
-         *   &kscan0 { row-gpios = <...>; col-gpios = <...>; };
-         */
     };
 
     matrix_transform_0: keymap_transform_0 {
