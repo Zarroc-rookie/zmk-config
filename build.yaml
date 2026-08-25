@@ -2,9 +2,11 @@
 # Used by GitHub Actions build-user-config.yml to know what to build.
 
 include:
-  # Main firmware: USB + BLE dual-mode.
+  # Main firmware: USB + BLE dual-mode + ZMK Studio (web editor).
   - board: nice_nano_v2
     shield: verdant02
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
 
   # One-shot settings reset: flash this ONCE before flashing the new
   # verdant02 firmware, to clear any cached BT_DEVICE_NAME / pairing
