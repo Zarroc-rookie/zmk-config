@@ -20,11 +20,6 @@
     chosen {
         zmk,kscan = &kscan0;
         zmk,matrix_transform = &matrix_transform_0;
-        zmk,physical-layout = &physical_layout0;
-    };
-
-    physical_layout0: physical_layout_0 {
-        transform = &matrix_transform_0;
     };
 
     kscan0: kscan {
