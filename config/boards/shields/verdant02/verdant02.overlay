@@ -59,31 +59,3 @@
         , <&gpio0 29 (GPIO_ACTIVE_HIGH)>
         ;
 };
-
-/* ---- WS2812 RGB LED strip on P1.01 (D21, SuperMini extra pin) ---- */
-/* Disabled by default. To enable:
- *   1. Change status below to "okay"
- *   2. Uncomment CONFIG_ZMK_RGB_UNDERGLOW=y in verdant02.conf
- *   3. Add: zmk,underglow = &ws2812; to chosen in verdant02.dtsi
- */
-&pinctrl {
-    spi3_default: spi3_default {
-        group1 {
-            psels = <NRF_PSEL(SPIM_MOSI, 1, 1)>;
-        };
-    };
-};
-
-&spi3 {
-    compatible = "nordic,nrf-spim";
-    status = "okay";
-    pinctrl-0 = <&spi3_default>;
-    pinctrl-names = "default";
-    ws2812: ws2812@0 {
-        compatible = "worldsemi,ws2812-spi";
-        reg = <0>;
-        spi-max-frequency = <4000000>;
-        chain-length = <13>;
-        status = "disabled";
-    };
-};
