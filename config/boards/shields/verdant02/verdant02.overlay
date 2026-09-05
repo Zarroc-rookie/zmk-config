@@ -59,3 +59,6 @@
         , <&gpio0 29 (GPIO_ACTIVE_HIGH)>
         ;
 };
+&caps_lock_indicator {
+    disconnected-brightness = <0>; /* 键盘未连接时，LED 亮度为 0，即关闭 */
+};
