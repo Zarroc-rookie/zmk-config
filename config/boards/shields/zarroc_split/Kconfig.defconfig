@@ -1,0 +1,9 @@
+if SHIELD_ZARROC_SPLIT
+
+config ZMK_KEYBOARD_NAME
+    default "Zarroc Split"
+
+config ZMK_SPLIT
+    default n
+
+endif
