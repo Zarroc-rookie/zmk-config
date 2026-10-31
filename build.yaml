@@ -5,6 +5,8 @@ include:
   # Main firmware: USB + BLE dual-mode.
   - board: nice_nano_v2
     shield: verdant02
+      - board: nice_nano_v2
+    shield: zarroc_split
 
   # One-shot settings reset: flash this ONCE before flashing the new
   # verdant02 firmware, to clear any cached BT_DEVICE_NAME / pairing
@@ -13,3 +15,5 @@ include:
   # CONFIG_ZMK_KEYBOARD_NAME value.
   - board: nice_nano_v2
     shield: settings_reset
+  - board: nice_nano_v2
+    shield: zarroc_split
